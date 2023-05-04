@@ -1,0 +1,6 @@
+public class atman{
+public static void main(String args[]){
+System.out.println("Hi");
+// replace hi with any text that you want to print.
+} 
+}
