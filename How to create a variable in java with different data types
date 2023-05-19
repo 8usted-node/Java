@@ -1,0 +1,8 @@
+int a = 12;
+float f = 23.5;
+double = 45.3;
+string = "Hello";
+char = 'h'
+Boolean = false
+long = 23;
+short = 2;
