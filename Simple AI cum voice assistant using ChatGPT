@@ -1,0 +1,55 @@
+import os
+import time
+import pyaudio
+import speech_recognition as sr
+import playsound
+from gtts import gTTS
+import openai
+
+api_key = "api key" #paste your api key that you have generated here 
+
+lang = 'en'
+
+openai.api_key = api_key
+
+guy = ""
+
+while True:
+    def get_audio():
+        r = sr.Recognizer()
+        with sr.Microphone(device_index=1) as source:
+            audio = r.listen(source)
+            said = ""
+
+            try:
+                said = r.recognize_google(audio)
+                print(said)
+                global guy
+                guy = said
+
+                if "Friday" in said:
+                    words = said.split()
+                    new_string = ' '.join(words[1:])
+                    print(new_string)
+                    completion = openai.Completion.create(
+                        engine="text-davinci-003",
+                        prompt=said,
+                        max_tokens=50
+                    )
+                    text = completion.choices[0].text.strip()
+                    speech = gTTS(text=text, lang=lang, slow=False, tld="com.au")
+                    speech.save("welcome1.mp3")
+                    playsound.playsound("welcome1.mp3")
+
+            except sr.UnknownValueError:
+                print("Speech Recognition could not understand audio")
+            except sr.RequestError as e:
+                print("Could not request results from Speech Recognition service; {0}".format(e))
+
+        return said
+
+
+    if "stop" in guy:
+        break
+
+    get_audio()
